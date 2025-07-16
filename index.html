@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="kira.png.png">
+    <title>Para ti 💖</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(#ffe6f0, #ffccdd);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        body {
+            position: relative;
+        }
+
+        /* --- INICIO DE CAMBIOS PARA CORAZONES Y ANIMACIÓN --- */
+        .background-heart {
+            position: absolute;
+            /* bottom: -20px; Eliminado de aquí, la animación lo maneja */
+            width: 20px; /* Tamaño base, será modificado por JS */
+            height: 20px; /* Tamaño base, será modificado por JS */
+            background-color: transparent; /* El color lo dan los pseudo-elementos */
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp 10s linear infinite, sway 4s ease-in-out infinite alternate;
+            opacity: 0; /* Empieza invisible, la animación lo hará visible */
+        }
+
+        .background-heart::before,
+        .background-heart::after {
+            content: '';
+            position: absolute;
+            width: 100%; /* Ocupa el 100% del padre .background-heart */
+            height: 100%; /* Ocupa el 100% del padre .background-heart */
+            background-color: rgba(255, 105, 180, 0.5); /* Color de corazón más visible (opacidad 0.5) */
+            border-radius: 50%;
+        }
+
+        .background-heart::before {
+            top: 0;
+            left: -50%;
+            transform: rotate(-45deg);
+            transform-origin: 100% 100%;
+        }
+
+        .background-heart::after {
+            top: -50%;
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 0% 100%;
+        }
+
+        @keyframes floatUp {
+            0% { bottom: -20px; opacity: 0; transform: translateX(0); }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { bottom: 100vh; opacity: 0; transform: translateX(0); }
+        }
+
+        @keyframes sway {
+            0% { transform: translateX(-20px); }
+            100% { transform: translateX(20px); }
+        }
+        /* --- FIN DE CAMBIOS PARA CORAZONES Y ANIMACIÓN --- */
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            text-align: center;
+            transition: opacity 0.5s; /* Reducido a 0.5s para aparición más rápida */
+        }
+
+        h1 {
+            color: #d63384;
+            margin-bottom: 10px;
+        }
+
+        img {
+            max-width: 200px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #ff66a3;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            z-index: 3;
+        }
+
+        button:disabled {
+            background-color: #ffaacc;
+            cursor: not-allowed;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #ff3385;
+        }
+
+        .love-message {
+            position: fixed;
+            color: #ff007f;
+            font-size: 1.8rem;
+            font-weight: bold;
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+            opacity: 0;
+            animation: fallAndSway 5s ease-in forwards;
+            z-index: 999;
+        }
+
+        @keyframes fallAndSway {
+            0% {
+                transform: translate(-50%, -100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, calc(50vh + var(--sway-amount, 0px))) rotate(var(--sway-rotation, 0deg));
+            }
+            100% {
+                transform: translate(-50%, calc(100vh + 50px)) rotate(var(--sway-rotation-end, 0deg));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        for (let i = 0; i < 30; i++) {
+            const heart = document.createElement("div");
+            heart.className = "background-heart";
+            heart.style.left = Math.random() * 100 + "vw"; // Posición horizontal aleatoria
+            heart.style.animationDuration = (8 + Math.random() * 7) + "s"; // Duración de animación entre 8 y 15 segundos
+            heart.style.animationDelay = (Math.random() * 5) + "s"; // Retraso de inicio aleatorio
+            
+            // Ajusta el tamaño de los corazones para que sean más notorios
+            const size = (15 + Math.random() * 25); // Tamaño entre 15px y 40px
+            heart.style.width = size + "px";
+            heart.style.height = size + "px";
+            
+            document.body.appendChild(heart);
+        }
+    </script>
+
+    <div class="container" id="contenido">
+        <h1>Para ti mi Belencita 💖</h1>
+        <img src="mi_foto.jpg.jpg" alt="La persona más hermosa del mundo">
+        <button id="botonAmor" onclick="mostrarMensaje()">APRIETA AQUÍ</button>
+    </div>
+
+    <audio id="sonido">
+        <source src="https://www.myinstants.com/media/sounds/cartoon-heart.mp3" type="audio/mpeg">
+        Tu navegador no soporta el audio.
+    </audio>
+
+    <script>
+        const frases = [
+            "TE QUIERO ❤️", "TE ADORO 💕", "TE EXTRAÑO 😢", "ERES TAN HERMOSA 😍", "ERES TAN PRECIOSA 💖",
+            "ERES TAN LINDA ✨", "ERES TAN RICA 🔥", "ERES TAN SEXY 😘", "ERES TAN ADORABLE 🥰", "ERES TAN TIERNA 💞"
+        ];
+
+        let indiceFrase = 0;
+
+        function mostrarMensaje() {
+            const boton = document.getElementById("botonAmor");
+            const contenido = document.getElementById("contenido");
+            const sonido = document.getElementById("sonido");
+
+            // Ocultar contenido inmediatamente para un efecto más rápido
+            contenido.style.opacity = 0;
+
+            boton.disabled = true;
+            sonido.currentTime = 0;
+            sonido.play();
+
+            const frase = frases[indiceFrase];
+
+            for (let i = 0; i < 50; i++) {
+                const mensaje = document.createElement("div");
+                mensaje.className = "love-message";
+                mensaje.innerText = frase;
+
+                mensaje.style.left = `${Math.random() * 100}vw`;
+
+                const swayAmount = (Math.random() - 0.5) * 200;
+                const swayRotation = (Math.random() - 0.5) * 90;
+                const swayRotationEnd = (Math.random() - 0.5) * 90;
+
+                mensaje.style.setProperty('--sway-amount', `${swayAmount}px`);
+                mensaje.style.setProperty('--sway-rotation', `${swayRotation}deg`);
+                mensaje.style.setProperty('--sway-rotation-end', `${swayRotationEnd}deg`);
+
+                mensaje.style.animationDuration = `${5 + Math.random() * 3}s`;
+                mensaje.style.animationDelay = `${Math.random() * 1}s`;
+
+                document.body.appendChild(mensaje);
+
+                setTimeout(() => {
+                    mensaje.remove();
+                }, parseFloat(mensaje.style.animationDuration) * 1000 + parseFloat(mensaje.style.animationDelay) * 1000 + 500);
+            }
+
+            // Mostrar contenido luego de una animación más corta
+            setTimeout(() => {
+                contenido.style.opacity = 1;
+                boton.disabled = false;
+            }, 4000); // Cambiado de 6000ms a 1000ms para una aparición más rápida
+
+            indiceFrase = (indiceFrase + 1) % frases.length;
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
